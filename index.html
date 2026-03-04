@@ -3,45 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Axiss Hub | Key System Personalizado</title>
+    <title>Axiss Hub | Sistema de Autenticação Única</title>
     <style>
-        body { background-color: #0f0f0f; color: #ffffff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .container { background: #1a1a1a; padding: 40px; border-radius: 15px; border: 1px solid #333; text-align: center; width: 90%; max-width: 450px; }
-        h1 { color: #00ff88; }
-        input { background: #000; border: 1px solid #00ff88; color: #fff; padding: 10px; width: 80%; border-radius: 5px; margin-bottom: 20px; text-align: center; }
-        .key-box { background: #000; border: 2px solid #00ff88; color: #00ff88; font-family: monospace; font-size: 22px; padding: 15px; border-radius: 8px; display: none; margin-top: 20px; }
-        button { background: #00ff88; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        * { box-sizing: border-box; }
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container {
+            background: #000000;
+            padding: 50px;
+            border-radius: 0px;
+            border: 1px solid #ffffff;
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+            letter-spacing: 1px;
+        }
+        h1 {
+            color: #ffffff;
+            font-size: 28px;
+            text-transform: uppercase;
+            font-weight: 300;
+            margin-bottom: 30px;
+            margin-top: 0;
+        }
+        p {
+            color: #888888;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        input {
+            background: #000000;
+            border: 1px solid #444444;
+            color: #ffffff;
+            padding: 12px;
+            width: 100%;
+            border-radius: 0px;
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: border-color 0.3s ease;
+        }
+        input:focus {
+            outline: none;
+            border-color: #ffffff;
+        }
+        button {
+            background-color: #ffffff;
+            color: #000000;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 0px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 2px;
+            width: 100%;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        button:hover {
+            background-color: #000000;
+            color: #ffffff;
+            border: 1px solid #ffffff;
+        }
+        .key-box {
+            background: #000000;
+            border: 1px solid #ffffff;
+            color: #ffffff;
+            font-family: monospace;
+            font-size: 20px;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 0px;
+            display: none;
+            word-wrap: break-word;
+            text-transform: uppercase;
+        }
+        .key-title {
+            color: #ffffff;
+            font-size: 14px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>AXISS HUB</h1>
-        <p>Insira o ID que o Loader copiou:</p>
-        <input type="text" id="hwidInput" placeholder="Cole o ID aqui...">
-        <br>
-        <button onclick="generateKey()">GERAR MINHA KEY</button>
+        <p>Insira seu Identificador Único (HWID)</p>
+        <input type="text" id="hwidInput" placeholder="Cole o código do Loader aqui...">
+        <button onclick="generateKey()">Gerar Chave de Acesso</button>
+        <div class="key-title" id="keyTitle">Sua Chave Diária Personalizada:</div>
         <div class="key-box" id="keyDisplay"></div>
     </div>
 
     <script>
         function generateKey() {
             const hwid = document.getElementById('hwidInput').value.trim();
-            if (!hwid) return alert("Cole seu ID!");
+            if (!hwid) {
+                alert("Por favor, cole seu Identificador Único.");
+                return;
+            }
             
             const now = new Date();
+
             const day = ("0" + now.getUTCDate()).slice(-2) + ("0" + (now.getUTCMonth() + 1)).slice(-2) + now.getUTCFullYear();
             const secret = "DRAKKIO_SECRET_99";
             
-            // Lógica de Hash combinando HWID + DATA + SEGREDO
             let combined = hwid + day + secret;
             let hash = 0;
+            
             for (let i = 0; i < combined.length; i++) {
                 hash = (hash * 31 + combined.charCodeAt(i)) % 10000000;
             }
             
-            const display = document.getElementById('keyDisplay');
-            display.innerText = "AXISS-" + Math.abs(hash);
-            display.style.display = "block";
+            const titleDisplay = document.getElementById('keyTitle');
+            const keyDisplay = document.getElementById('keyDisplay');
+            
+            keyDisplay.innerText = "AXISS-" + Math.abs(hash);
+            
+            titleDisplay.style.display = "block";
+            keyDisplay.style.display = "block";
         }
     </script>
 </body>
