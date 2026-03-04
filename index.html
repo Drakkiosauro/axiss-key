@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axiss Hub | Key System</title>
+    <style>
+        body {
+            background-color: #0f0f0f;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: #1a1a1a;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid #333;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+        h1 { color: #00ff88; margin-bottom: 10px; font-size: 24px; }
+        p { color: #aaa; font-size: 14px; }
+        .key-box {
+            background: #000;
+            border: 2px solid #00ff88;
+            color: #00ff88;
+            font-family: monospace;
+            font-size: 28px;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+        .footer { font-size: 12px; color: #555; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>AXISS HUB</h1>
+        <p>Sua chave de acesso válida por 24 horas:</p>
+        <div class="key-box" id="key">GERANDO...</div>
+        <p>Copie e cole no seu Loader dentro do Roblox.</p>
+        <div class="footer">Sistema Automático &copy; 2026</div>
+    </div>
+
+    <script>
+        function generateKey() {
+            const now = new Date();
+            // Data em formato UTC para bater com o Roblox
+            const day = ("0" + now.getUTCDate()).slice(-2) + ("0" + (now.getUTCMonth() + 1)).slice(-2) + now.getUTCFullYear();
+            const secret = "DRAKKIO_SECRET_99"; 
+            let hash = 0;
+            
+            for (let i = 0; i < day.length; i++) {
+                hash = (hash * 31 + day.charCodeAt(i)) % 1000000;
+            }
+            for (let i = 0; i < secret.length; i++) {
+                hash = (hash * 31 + secret.charCodeAt(i)) % 1000000;
+            }
+            
+            document.getElementById('key').innerText = "AXISS-" + hash;
+        }
+        generateKey();
+    </script>
+</body>
+</html>
